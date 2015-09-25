@@ -1,15 +1,25 @@
 import org.openqa.selenium.By;
+import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.Test;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+
 public class SampleTest {
 
     @Test
-    public void startURL() {
-        WebDriver driver = new FirefoxDriver();
+    public void startURL() throws MalformedURLException {
+        String nodeUrl = "http://192.168.214.130:5566/wd/hub";
+        DesiredCapabilities capability = new DesiredCapabilities();
+        DesiredCapabilities.firefox();
+        capability.setBrowserName("firefox");
+        capability.setPlatform(Platform.LINUX);
+        WebDriver driver = new RemoteWebDriver(new URL(nodeUrl), capability);
         WebDriverWait wait = new WebDriverWait(driver, 10);
         driver.get("http://www.rozetka.com.ua");
         driver.findElement(By.name("signin")).click();
@@ -34,5 +44,6 @@ public class SampleTest {
         driver.navigate().back();
         driver.findElement(By.name("profile")).click();
         driver.findElement(By.xpath("//*[@id='personal_information']/div/ul/li[3]/a")).click();
+        driver.quit();
     }
 }
